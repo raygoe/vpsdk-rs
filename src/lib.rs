@@ -17,7 +17,7 @@ impl Sdk {
         unsafe {
             let rc = native::vp_init(native::VPSDK_VERSION);
             if rc != 0 {
-                return Err(io::Error::new(ErrorKind::AddrNotAvailable, "Could not initialize API."));
+                return Err(io::Error::new(ErrorKind::AddrNotAvailable, "Could not initialize API. (reason {})", rc));
             }
 
             let sdk = Sdk { instance: native::vp_create(), username: String::new(), botname: String::new(), world: String::new() };
