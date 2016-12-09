@@ -17,7 +17,7 @@ impl Sdk {
         unsafe {
             let sdk = Sdk { instance: native::vp_create(), username: String::new(), botname: String::new(), world: String::new() };
 
-            if sdk.instance != 0 {
+            if sdk.instance == std::ptr::null_mut()  {
                 return Err(io::Error::new(ErrorKind::InvalidData, "Could not create VP Instance."))
             }
 
