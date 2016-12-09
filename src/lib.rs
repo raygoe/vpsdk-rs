@@ -16,7 +16,7 @@ impl Sdk {
 
         unsafe {
             let rc = native::vp_init(native::VPSDK_VERSION);
-            if rc != 0 {
+            if rc > 1 {
                 return Err(io::Error::new(ErrorKind::AddrNotAvailable, format!("Could not initialize API. (reason {})", rc).as_str()));
             }
 
