@@ -10,5 +10,11 @@ fn main() {
         }
     };
 
-    println!("cargo:rustc-flags=-l VPSDK -L {}", vpsdk_dir);
+    let vpsdk_name = if cfg!(windows) {
+        "VPSDK"
+    } else {
+        "vpsdk"
+    };
+
+    println!("cargo:rustc-flags=-l {} -L {}", vpsdk_name, vpsdk_dir);
 }
