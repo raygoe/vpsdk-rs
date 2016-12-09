@@ -15,15 +15,20 @@ impl Sdk {
         let host = CString::new(host)?;
 
         unsafe {
+            let rc = native::vp_init(native::VPSDK_VERSION);
+            if rc != 0 {
+                return Err(io::Error::new(ErrorKind::AddrNotAvailable, "Could not initialize API."));
+            }
+
             let sdk = Sdk { instance: native::vp_create(), username: String::new(), botname: String::new(), world: String::new() };
 
             if sdk.instance == std::ptr::null_mut()  {
-                return Err(io::Error::new(ErrorKind::InvalidData, "Could not create VP Instance."))
+                return Err(io::Error::new(ErrorKind::InvalidData, "Could not create VP Instance."));
             }
 
             let rc = native::vp_connect_universe(sdk.instance, host.as_ptr(), port);
             if rc != 0 {
-                return Err(io::Error::new(ErrorKind::AddrNotAvailable, "Could not connect to the universe."))
+                return Err(io::Error::new(ErrorKind::AddrNotAvailable, "Could not connect to the universe."));
             }
 
             Ok(sdk)
