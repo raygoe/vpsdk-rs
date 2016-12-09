@@ -1,0 +1,8 @@
+[package]
+name = "vpsdk"
+version = "0.1.0"
+authors = ["Eric Christian <eric.david.christian@gmail.com>"]
+build = "build.rs"
+
+[dependencies]
+libc = "0.2"
