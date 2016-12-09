@@ -14,9 +14,15 @@ impl Sdk {
     pub fn create(host: &str, port: i32) -> Result<Sdk, io::Error> {
         let host = CString::new(host)?;
 
+        let version = if cfg!(windows) {
+            3
+        } else {
+            2
+        };
+
         unsafe {
-            let rc = native::vp_init(native::VPSDK_VERSION);
-            if rc > 1 {
+            let rc = native::vp_init(version);
+            if rc != 0 {
                 return Err(io::Error::new(ErrorKind::AddrNotAvailable, format!("Could not initialize API. (reason {})", rc).as_str()));
             }
 
