@@ -1,6 +1,6 @@
 # vpsdk-rs
 
-A safe wrapper around vpsdk.
+A safe, Rust wrapper around vpsdk.
 
 ## Requirements
 
