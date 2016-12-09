@@ -268,7 +268,6 @@ impl Clone for VpTerrainCell {
     }
 }
 
-#[link(name="VPSDK", alias = "vpsdk")]
 extern "C" {
     pub fn _vp_init(version: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 
