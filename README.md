@@ -41,3 +41,11 @@ fn main() {
 Then, you can just start the bot!
 
     $ cargo run
+
+## FAQ
+
+#### If I run my bot on 'nix, it complains that it cannot find libvpsdk.so!
+
+You can either do something like LD_LIBRARY_PATH=$VPSDK_DIR ./greeter_bot or copy the .so file into the same directory as the executable and then make sure you modify the rpath and rebuild:
+
+    $ cargo rustc  --release -- -C link-args="-Wl,-rpath,."
