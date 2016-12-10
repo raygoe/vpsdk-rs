@@ -4,7 +4,7 @@ A safe, Rust wrapper around vpsdk.
 
 ## Requirements
 
-* vpsdk >= 3
+* vpsdk = 4 (r1779)
 
 You should make sure that you install the VPSDK into a directory and create an environment variable, VPSDK_DIR, that points to the library.
 
