@@ -17,4 +17,5 @@ fn main() {
     };
 
     println!("cargo:rustc-flags=-l {} -L {}", vpsdk_name, vpsdk_dir);
+    println!("cargo:rustc-link-search=native=.");
 }
