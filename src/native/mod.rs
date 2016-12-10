@@ -268,13 +268,26 @@ impl Clone for VpTerrainCell {
     }
 }
 
-extern "C" {
-    pub fn vp_init(version: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
+#[repr(C)]
+#[derive(Debug, Copy)]
+pub struct VpNetConfig {
+    pub _address: u8,
+}
+impl Clone for VpNetConfig {
+    fn clone(&self) -> Self { *self }
+}
 
-    ///  Create a new instance.
-    ///  \return New instance or NULL on failure.
-    ///
-    pub fn vp_create() -> VpInstance;
+extern "C" {
+    pub fn vp_init(version: ::std::os::raw::c_int) -> ::std::os::raw::c_int; 
+
+    /**
+    *  Create a new instance.
+    *  \param net_config network configuration for the instance or NULL to use 
+    *                    the default select-based implementation. The contents of 
+    *                    the structure will be copied.
+    *  \return New instance or NULL on failure.
+    */
+    pub fn vp_create(net_config: *const VpNetConfig) -> VpInstance;
 
     ///  Destroy a Virtual Paradise SDK instance.
     ///

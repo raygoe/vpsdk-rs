@@ -20,7 +20,7 @@ impl Sdk {
                 return Err(io::Error::new(ErrorKind::AddrNotAvailable, format!("Could not initialize API. (reason {})", rc).as_str()));
             }
 
-            let sdk = Sdk { instance: native::vp_create(), username: String::new(), botname: String::new(), world: String::new() };
+            let sdk = Sdk { instance: native::vp_create(std::ptr::null()), username: String::new(), botname: String::new(), world: String::new() };
 
             if sdk.instance == std::ptr::null_mut()  {
                 return Err(io::Error::new(ErrorKind::InvalidData, "Could not create VP Instance."));
