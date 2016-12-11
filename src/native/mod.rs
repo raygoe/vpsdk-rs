@@ -291,7 +291,7 @@ extern "C" {
 
     ///  Destroy a Virtual Paradise SDK instance.
     ///
-    pub fn _vp_destroy(instance: VpInstance) -> ::std::os::raw::c_int;
+    pub fn vp_destroy(instance: VpInstance) -> ::std::os::raw::c_int;
 
     ///  Connect to a universe server
     ///  \param instance
@@ -350,7 +350,7 @@ extern "C" {
     ///  \returns #VpRcSuccess
     ///  \returns #VpRcNotInWorld
     ///
-    pub fn _vp_leave(instance: VpInstance) -> ::std::os::raw::c_int;
+    pub fn vp_leave(instance: VpInstance) -> ::std::os::raw::c_int;
 
     ///  Send a simple message to everyone in the current world.
     ///  \param message The message to send.

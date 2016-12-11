@@ -3,11 +3,19 @@ mod native;
 use std::ffi::CString;
 use std::io::{self, ErrorKind};
 
+enum InstanceState {
+    Disconnected,
+    Connected,
+    LoggedIn,
+    InWorld,
+}
+
 pub struct Sdk {
     instance: native::VpInstance,
     pub username: String,
     pub botname: String,
     pub world: String,
+    state: InstanceState,
 }
 
 impl Sdk {
@@ -20,7 +28,12 @@ impl Sdk {
                 return Err(io::Error::new(ErrorKind::AddrNotAvailable, format!("Could not initialize API. (reason {})", rc).as_str()));
             }
 
-            let sdk = Sdk { instance: native::vp_create(std::ptr::null()), username: String::new(), botname: String::new(), world: String::new() };
+            let mut sdk = Sdk { instance: native::vp_create(std::ptr::null()),
+                username: String::new(),
+                botname: String::new(),
+                world: String::new(),
+                state: InstanceState::Disconnected
+            };
 
             if sdk.instance == std::ptr::null_mut()  {
                 return Err(io::Error::new(ErrorKind::InvalidData, "Could not create VP Instance."));
@@ -30,6 +43,8 @@ impl Sdk {
             if rc != 0 {
                 return Err(io::Error::new(ErrorKind::AddrNotAvailable, "Could not connect to the universe."));
             }
+
+            sdk.state = InstanceState::Connected;
 
             Ok(sdk)
         }
@@ -49,6 +64,7 @@ impl Sdk {
         if rc != 0 {
             Err(io::Error::new(ErrorKind::PermissionDenied, "Could not login."))
         } else {
+            self.state = InstanceState::LoggedIn;
             Ok(rc)
         }
     }
@@ -64,6 +80,7 @@ impl Sdk {
         if rc != 0 {
             Err(io::Error::new(ErrorKind::InvalidData, "Could not enter world."))
         } else {
+            self.state = InstanceState::InWorld;
             Ok(rc)
         }
     }
@@ -77,6 +94,23 @@ impl Sdk {
             Err(io::Error::new(ErrorKind::Other, "Could not update state."))
         } else {
             Ok(rc)
+        }
+    }
+}
+
+impl Drop for Sdk {
+    fn drop(&mut self) {
+        match self.state {
+            InstanceState::InWorld => {
+                unsafe {
+                    native::vp_leave(self.instance);
+                }
+            },
+            _ => {}
+        }
+
+        unsafe {
+            native::vp_destroy(self.instance);
         }
     }
 }
