@@ -97,9 +97,13 @@ impl Sdk {
         }
     }
 
-    pub fn tick(&mut self, max_wait_ms: i32) -> Result<i32, io::Error> {
+    pub fn tick(&mut self) -> Result<i32, io::Error> {
+        self.tick_ms(16) // 60 ticks per second.
+    }
+
+    pub fn tick_ms(&mut self, wait_time_ms: i32) -> Result<i32, io::Error> {
         let rc = unsafe {
-            native::vp_wait(self.instance, max_wait_ms)
+            native::vp_wait(self.instance, wait_time_ms)
         };
 
         if rc != 0 {
