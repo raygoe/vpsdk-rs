@@ -328,7 +328,7 @@ extern "C" {
     ///  \warning Not reentrant when used with the same instance, may not be called from event handlers unless it is for a different instance.
     ///  \return Zero when successful, otherwise nonzero. See RC.h
     ///
-    pub fn _vp_wait(instance: VpInstance,
+    pub fn vp_wait(instance: VpInstance,
                    milliseconds: ::std::os::raw::c_int)
                    -> ::std::os::raw::c_int;
 
@@ -358,7 +358,7 @@ extern "C" {
     ///  \returns #VpRcNotInWorld
     ///  \returns #VpRcStringTooLong
     ///
-    pub fn _vp_say(instance: VpInstance,
+    pub fn vp_say(instance: VpInstance,
                   message: *const ::std::os::raw::c_char)
                   -> ::std::os::raw::c_int;
 

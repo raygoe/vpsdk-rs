@@ -96,6 +96,31 @@ impl Sdk {
             Ok(rc)
         }
     }
+
+    pub fn tick(&mut self, max_wait_ms: i32) -> Result<i32, io::Error> {
+        let rc = unsafe {
+            native::vp_wait(self.instance, max_wait_ms)
+        };
+
+        if rc != 0 {
+            Err(io::Error::new(ErrorKind::Interrupted, "Could not process events."))
+        } else {
+            Ok(rc)
+        }
+    }
+
+    pub fn say(&mut self, message: &str) -> Result<i32, io::Error> {
+        let message = CString::new(message)?;
+        let rc = unsafe {
+            native::vp_say(self.instance, message.as_ptr())
+        };
+
+        if rc != 0 {
+            Err(io::Error::new(ErrorKind::InvalidData, "Could not say anything."))
+        } else {
+            Ok(rc)
+        }
+    }
 }
 
 impl Drop for Sdk {
